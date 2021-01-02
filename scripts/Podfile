@@ -1,0 +1,7 @@
+# Uncomment the next line to define a global platform for your project
+platform :osx, '12.0'
+
+target 'deps' do
+  use_frameworks!
+  pod 'openssl-iosx', '1.1.1i.1'
+end

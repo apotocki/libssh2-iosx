@@ -1,0 +1,7 @@
+/**/.DS_STORE
+/libssh2-*
+/build*
+/frameworks
+/scripts/Pods
+/scripts/Podfile.lock
+scripts/deps.xcworkspace
