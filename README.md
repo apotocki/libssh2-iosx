@@ -13,7 +13,7 @@ The actual library version is taken from https://github.com/libssh2/libssh2.git 
  - Manually
 ```
     # clone the repo
-    git clone -b libssh2-1.9.0 https://github.com/apotocki/libssh2-iosx
+    git clone -b 1.9.0.1 https://github.com/apotocki/libssh2-iosx
     
     # build libraries
     cd libssh2-iosx
