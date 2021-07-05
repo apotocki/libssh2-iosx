@@ -3,5 +3,5 @@ platform :osx, '12.0'
 
 target 'deps' do
   use_frameworks!
-  pod 'openssl-iosx', '1.1.1i.1'
+  pod 'openssl-iosx', '~> 1.1.1k'
 end
