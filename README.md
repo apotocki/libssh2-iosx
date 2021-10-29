@@ -1,4 +1,4 @@
-## LIBSSH2 for iOS and Mac OS X - arm64 / x86_64
+## LIBSSH2 for iOS and Mac OS X (Intel & Apple Silicon M1) - arm64 / x86_64
 
 Supported version: 1.10.0.1
 
