@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "libssh2-iosx"
-    s.version      = "1.9.0.1"
+    s.version      = "1.10.0.1"
     s.summary      = "LIBSSH2 is a client-side C library implementing the SSH2 protocol"
     s.homepage     = "https://github.com/apotocki/libssh2-iosx"
     s.license      = "BSD-3-Clause License"
