@@ -26,7 +26,7 @@ The actual library version is taken from https://github.com/libssh2/libssh2.git 
     use_frameworks!
     pod 'libssh2-iosx', '~> 1.10.0.1' 
     # or optionally more precisely
-    # pod 'libssh2-iosx', :git => 'https://github.com/apotocki/libssh2-iosx', :tag => '~> 1.10.0.1'
+    # pod 'libssh2-iosx', :git => 'https://github.com/apotocki/libssh2-iosx', :tag => '1.10.0.1'
 ```    
 install new dependency:
 ```
