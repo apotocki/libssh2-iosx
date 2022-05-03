@@ -20,6 +20,7 @@ fi
 ############### OpenSSL
 if [ ! -d $SCRIPT_DIR/Pods/openssl-iosx/frameworks ]; then
 	pushd $SCRIPT_DIR
+	pod repo update
 	pod install --verbose
 	popd
 fi
@@ -37,7 +38,7 @@ if [ ! -d $BUILD_DIR/build.ios ]; then
 mkdir $BUILD_DIR/build
 pushd $BUILD_DIR/build
 
-cmake -DCMAKE_TOOLCHAIN_FILE=$SCRIPT_DIR/ios.toolchain.cmake -DCRYPTO_BACKEND=OpenSSL -DOPENSSL_INCLUDE_DIR="$OPENSSL_PATH/Headers" -DOPENSSL_SSL_LIBRARY="$OPENSSL_PATH/ssl.xcframework/ios-arm64/libssl.a" -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL_PATH/crypto.xcframework/ios-arm64/libcrypto.a" -DCMAKE_C_FLAGS="-DOPENSSL_NO_ENGINE -Wno-shorten-64-to-32 -fembed-bitcode-marker" -DENABLE_ZLIB_COMPRESSION=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$BUILD_DIR/frameworks -GXcode ../$LIBSSH2_VER_NAME
+cmake -DCMAKE_TOOLCHAIN_FILE=$SCRIPT_DIR/ios.toolchain.cmake -DCRYPTO_BACKEND=OpenSSL -DOPENSSL_INCLUDE_DIR="$OPENSSL_PATH/Headers" -DOPENSSL_SSL_LIBRARY="$OPENSSL_PATH/ssl.xcframework/ios-arm64/libssl.a" -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL_PATH/crypto.xcframework/ios-arm64/libcrypto.a" -DCMAKE_C_FLAGS="-DOPENSSL_NO_ENGINE -Wno-shorten-64-to-32 -fembed-bitcode" -DENABLE_ZLIB_COMPRESSION=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$BUILD_DIR/frameworks -GXcode ../$LIBSSH2_VER_NAME
 
 cmake --build . --config Release --target libssh2 -- -sdk iphoneos -j $THREAD_COUNT
 popd
@@ -49,7 +50,7 @@ if [ ! -d $BUILD_DIR/build.iossim ]; then
 mkdir $BUILD_DIR/build
 pushd $BUILD_DIR/build
 
-cmake  -DCRYPTO_BACKEND=OpenSSL -DOPENSSL_INCLUDE_DIR="$OPENSSL_PATH/Headers" -DOPENSSL_SSL_LIBRARY="$OPENSSL_PATH/ssl.xcframework/ios-$HOST_ARC-simulator/libssl.a" -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL_PATH/crypto.xcframework/ios-$HOST_ARC-simulator/libcrypto.a" -DCMAKE_C_FLAGS="-DOPENSSL_NO_ENGINE -Wno-shorten-64-to-32 -fembed-bitcode-marker" -DENABLE_ZLIB_COMPRESSION=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -GXcode ../$LIBSSH2_VER_NAME
+cmake  -DCRYPTO_BACKEND=OpenSSL -DOPENSSL_INCLUDE_DIR="$OPENSSL_PATH/Headers" -DOPENSSL_SSL_LIBRARY="$OPENSSL_PATH/ssl.xcframework/ios-$HOST_ARC-simulator/libssl.a" -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL_PATH/crypto.xcframework/ios-$HOST_ARC-simulator/libcrypto.a" -DCMAKE_C_FLAGS="-DOPENSSL_NO_ENGINE -Wno-shorten-64-to-32 -fembed-bitcode" -DENABLE_ZLIB_COMPRESSION=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -GXcode ../$LIBSSH2_VER_NAME
 
 cmake --build . --config Release --target libssh2 -- -sdk iphonesimulator -j $THREAD_COUNT
 popd
