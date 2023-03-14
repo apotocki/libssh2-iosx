@@ -28,7 +28,7 @@ if [[ ! -d $SCRIPT_DIR/Pods/openssl-iosx/frameworks ]]; then
 		if [[ -d $SCRIPT_DIR/Pods/openssl-iosx ]]; then
 			rm -rf $SCRIPT_DIR/Pods/openssl-iosx
 		fi
-		mkdir $SCRIPT_DIR/Pods/openssl-iosx
+		mkdir -p $SCRIPT_DIR/Pods/openssl-iosx
 		pushd $SCRIPT_DIR/Pods/openssl-iosx
 		curl -L ${OPENSSL_RELEASE_LINK}/include.zip -o $SCRIPT_DIR/Pods/openssl-iosx/include.zip
 		curl -L ${OPENSSL_RELEASE_LINK}/crypto.xcframework.zip -o $SCRIPT_DIR/Pods/openssl-iosx/crypto.xcframework.zip
