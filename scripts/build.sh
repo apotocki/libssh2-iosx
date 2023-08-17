@@ -66,7 +66,7 @@ if [[ ! -d $BUILD_DIR/build.$1.${2//;/_} ]]; then
 
 	cmake $4 -DCMAKE_OSX_ARCHITECTURES=$2 -DCRYPTO_BACKEND=OpenSSL -DOPENSSL_INCLUDE_DIR="$OPENSSL_PATH/Headers" -DOPENSSL_SSL_LIBRARY="$OPENSSL_PATH/ssl.xcframework/$6/libssl.a" -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL_PATH/crypto.xcframework/$6/libcrypto.a" -DCMAKE_C_FLAGS="-DOPENSSL_NO_ENGINE -Wno-shorten-64-to-32 $5" -DENABLE_ZLIB_COMPRESSION=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$BUILD_DIR/frameworks -GXcode ../$LIBSSH2_VER_NAME
 
-	cmake --build . --config Release --target libssh2 -- $3 -j $THREAD_COUNT
+	cmake --build . --config Release --target libssh2_static -- $3 -j $THREAD_COUNT
 	popd
 	mv $BUILD_DIR/build $BUILD_DIR/build.$1.${2//;/_}
 fi
