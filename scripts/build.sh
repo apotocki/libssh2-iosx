@@ -4,7 +4,7 @@ set -e
 # brew install git git-lfs
 THREAD_COUNT=$(sysctl hw.ncpu | awk '{print $2}')
 HOST_ARC=$( uname -m )
-LIBSSH2_VER=libssh2-1.10.0
+LIBSSH2_VER=libssh2-1.11.0
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BUILD_DIR="$( cd "$( dirname "./" )" >/dev/null 2>&1 && pwd )"
 #XCODE_ROOT=$( xcode-select -print-path )
