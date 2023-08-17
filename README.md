@@ -1,6 +1,6 @@
 ## LIBSSH2 for iOS and Mac OS X (Intel & Apple Silicon M1) - arm64 / x86_64
 
-Supported versions: 1.10.0, 1.9.0
+Supported versions: 1.11.0, 1.10.0, 1.9.0
 
 This repo provides a universal script for building static LIBSSH2 library for use in iOS and Mac OS X applications.
 The actual library version is taken from https://github.com/libssh2/libssh2.git with an appropriate tag like 'libssh2-1.10.0'
@@ -13,7 +13,7 @@ The actual library version is taken from https://github.com/libssh2/libssh2.git 
  - Manually
 ```
     # clone the repo
-    git clone -b 1.10.0 https://github.com/apotocki/libssh2-iosx
+    git clone -b 1.11.0 https://github.com/apotocki/libssh2-iosx
     
     # build libraries
     cd libssh2-iosx
@@ -24,9 +24,10 @@ The actual library version is taken from https://github.com/libssh2/libssh2.git 
  - Use cocoapods. Add the following lines into your project's Podfile:
 ```
     use_frameworks!
-    pod 'libssh2-iosx', '~> 1.10.0' 
+
+    pod 'libssh2-iosx', '~> 1.11.0' 
     # or optionally more precisely
-    # pod 'libssh2-iosx', :git => 'https://github.com/apotocki/libssh2-iosx', :tag => '1.10.0.2'
+    # pod 'libssh2-iosx', :git => 'https://github.com/apotocki/libssh2-iosx', :tag => '1.11.0.0'
 ```    
 install new dependency:
 ```
