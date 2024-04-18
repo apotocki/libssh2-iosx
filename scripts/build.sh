@@ -1,31 +1,47 @@
 #!/bin/bash
 set -e
 ################## SETUP BEGIN
-# brew install git git-lfs
 THREAD_COUNT=$(sysctl hw.ncpu | awk '{print $2}')
-HOST_ARC=$( uname -m )
+XCODE_ROOT=$( xcode-select -print-path )
 LIBSSH2_VER=libssh2-1.11.0
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-BUILD_DIR="$( cd "$( dirname "./" )" >/dev/null 2>&1 && pwd )"
-#XCODE_ROOT=$( xcode-select -print-path )
+#MACOSX_VERSION_ARM=11
+#MACOSX_VERSION_X86_64=11
+IOS_VERSION=13.4
+IOS_SIM_VERSION=13.4
 ################## SETUP END
-#MACSYSROOT=$XCODE_ROOT/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+
+IOSSYSROOT=$XCODE_ROOT/Platforms/iPhoneOS.platform/Developer
+IOSSIMSYSROOT=$XCODE_ROOT/Platforms/iPhoneSimulator.platform/Developer
+MACSYSROOT=$XCODE_ROOT/Platforms/MacOSX.platform/Developer
+XROSSYSROOT=$XCODE_ROOT/Platforms/XROS.platform/Developer
+XROSSIMSYSROOT=$XCODE_ROOT/Platforms/XRSimulator.platform/Developer
 
 LIBSSH2_VER_NAME=${LIBSSH2_VER//./_}
 
-if [[ -d $BUILD_DIR/frameworks ]]; then
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+BUILD_DIR="$( cd "$( dirname "./" )" >/dev/null 2>&1 && pwd )"
+
+MACOSX_VERSION_X86_64_BUILD_FLAGS="" && [ ! -z "${MACOSX_VERSION_X86_64}" ] && MACOSX_VERSION_X86_64_BUILD_FLAGS="-DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION_X86_64"
+MACOSX_VERSION_ARM_BUILD_FLAGS="" && [ ! -z "${MACOSX_VERSION_ARM}" ] && MACOSX_VERSION_ARM_BUILD_FLAGS="-DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION_ARM"
+
+if [ $(clang++ --version | head -1 | sed -E 's/([a-zA-Z ]+)([0-9]+).*/\2/') -gt 14 ]; then
+	CLANG15=true
+fi
+
+
+if [ -d $BUILD_DIR/frameworks ]; then
 	rm -rf $BUILD_DIR/frameworks
 fi
 
-if [[ ! -d $LIBSSH2_VER_NAME ]]; then
+if [ ! -d $LIBSSH2_VER_NAME ]; then
 	echo downloading $LIBSSH2_VER ...
 	git clone --depth 1 -b $LIBSSH2_VER https://github.com/libssh2/libssh2.git $LIBSSH2_VER_NAME
 fi
 
-############### OpenSSL
-if [[ ! -d $SCRIPT_DIR/Pods/openssl-iosx/frameworks ]]; then
-	if [[ ! -z "${OPENSSL_RELEASE_LINK}" ]]; then
-		if [[ -d $SCRIPT_DIR/Pods/openssl-iosx ]]; then
+############### OpenSSL Begin
+if [ ! -d $SCRIPT_DIR/Pods/openssl-iosx/frameworks ]; then
+	if [ ! -z "${OPENSSL_RELEASE_LINK}" ]; then
+		if [ -d $SCRIPT_DIR/Pods/openssl-iosx ]; then
 			rm -rf $SCRIPT_DIR/Pods/openssl-iosx
 		fi
 		mkdir -p $SCRIPT_DIR/Pods/openssl-iosx
@@ -49,7 +65,7 @@ if [[ ! -d $SCRIPT_DIR/Pods/openssl-iosx/frameworks ]]; then
 	fi
 fi
 OPENSSL_PATH=$SCRIPT_DIR/Pods/openssl-iosx/frameworks
-############### OpenSSL
+############### OpenSSL End
 
 echo building $LIBSSH2_VER "(-j$THREAD_COUNT)" ...
 
@@ -59,7 +75,7 @@ fi
 
 generic_build()
 {
-if [[ ! -d $BUILD_DIR/build.$1.${2//;/_} ]]; then
+if [ ! -d $BUILD_DIR/build.$1.${2//;/_} ]; then
 	echo "BUILDING $1 $2"
 	mkdir $BUILD_DIR/build
 	pushd $BUILD_DIR/build
@@ -72,13 +88,36 @@ if [[ ! -d $BUILD_DIR/build.$1.${2//;/_} ]]; then
 fi
 }
 
-generic_build ios arm64 "-sdk iphoneos" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=13.4" "-fembed-bitcode" "ios-arm64"
-generic_build simulator "arm64;x86_64" "-sdk iphonesimulator" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=13.4 -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO -DCMAKE_IOS_INSTALL_COMBINED=YES" "-fembed-bitcode" "ios-*-simulator"
-generic_build osx "arm64;x86_64" ""  "-DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO -DCMAKE_IOS_INSTALL_COMBINED=YES" "" "macos-*"
+generic_build ios arm64 "-sdk iphoneos" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=$IOS_VERSION" "-fembed-bitcode" "ios-arm64"
+generic_build ios-simulator "arm64;x86_64" "-sdk iphonesimulator" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=$IOS_SIM_VERSION -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO" "-fembed-bitcode" "ios-*-simulator"
+generic_build osx "arm64" "" "$MACOSX_VERSION_ARM_BUILD_FLAGS -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO" "" "macos-*"
+generic_build osx "x86_64" "" "$MACOSX_VERSION_X86_64_BUILD_FLAGS -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO" "" "macos-*"
 
-mkdir $BUILD_DIR/frameworks
-xcodebuild -create-xcframework -library $BUILD_DIR/build.ios.arm64/src/Release-iphoneos/libssh2.a -library $BUILD_DIR/build.simulator.arm64_x86_64/src/Release-iphonesimulator/libssh2.a -library $BUILD_DIR/build.osx.arm64_x86_64/src/Release/libssh2.a -output $BUILD_DIR/frameworks/ssh2.xcframework
+if [ ! -d $BUILD_DIR/build.osx.arm64_x86_64 ]; then
+    mkdir -p $BUILD_DIR/build.osx.arm64_x86_64/src/Release
+    lipo -create $BUILD_DIR/build.osx.arm64/src/Release/libssh2.a $BUILD_DIR/build.osx.x86_64/src/Release/libssh2.a -output $BUILD_DIR/build.osx.arm64_x86_64/src/Release/libssh2.a
+fi
+
+if [ -d $XROSSYSROOT ]; then
+    generic_build xros arm64 "-sdk xros" "-DCMAKE_SYSTEM_NAME=visionOS" "-fembed-bitcode" "xros-arm64"
+fi
+
+if [ -d $XROSSIMSYSROOT/SDKs/XRSimulator.sdk ]; then
+    generic_build xros-simulator "arm64;x86_64" "-sdk xrsimulator" "-DCMAKE_SYSTEM_NAME=iOS  -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO" "-fembed-bitcode" "xros-*-simulator"
+fi
+
+
+LIBARGS="-library $BUILD_DIR/build.ios.arm64/src/Release-iphoneos/libssh2.a \
+    -library $BUILD_DIR/build.ios-simulator.arm64_x86_64/src/Release-iphonesimulator/libssh2.a \
+    -library $BUILD_DIR/build.osx.arm64_x86_64/src/Release/libssh2.a"
+
+if [ -d $XROSSIMSYSROOT/SDKs/XRSimulator.sdk ]; then
+    LIBARGS="$LIBARGS -library $BUILD_DIR/build.xros-simulator.arm64_x86_64/src/Release-xrsimulator/libssh2.a"
+fi
+if [ -d $XROSSYSROOT/SDKs/XROS.sdk ]; then
+    LIBARGS="$LIBARGS -library $BUILD_DIR/build.xros.arm64/src/Release-xros/libssh2.a"
+fi
+xcodebuild -create-xcframework $LIBARGS -output $BUILD_DIR/frameworks/ssh2.xcframework
 
 mkdir $BUILD_DIR/frameworks/Headers
 cp $LIBSSH2_VER_NAME/include/*.h $BUILD_DIR/frameworks/Headers
-
