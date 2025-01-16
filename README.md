@@ -1,4 +1,5 @@
-[<img src="https://api.gitsponsors.com/api/badge/img?id=326271817" height="20">](https://api.gitsponsors.com/api/badge/link?p=q/vY0es7/bFiiwLplj75Ni0Hk7AuBgtCgdfiFv1LSFdlvXpfC6mohGOtwjw1B9E677ArJVMRwLWZr6yRJOzsdGGfZz1N9s3jH/eUgCX5Hun8pPlbneg0FHkn29SMyNbe4mKOmHsWfZEmd3Rto/pJLQ==)
+[<img src="https://api.gitsponsors.com/api/badge/img?id=326271817" height="40">](https://api.gitsponsors.com/api/badge/link?p=q/vY0es7/bFiiwLplj75Ni0Hk7AuBgtCgdfiFv1LSFdlvXpfC6mohGOtwjw1B9E677ArJVMRwLWZr6yRJOzsdGGfZz1N9s3jH/eUgCX5Hun8pPlbneg0FHkn29SMyNbe4mKOmHsWfZEmd3Rto/pJLQ==)
+[<img src="https://api.gitsponsors.com/api/badge/img?id=326271817" height="40">](https://api.gitsponsors.com/api/badge/link?p=q/vY0es7/bFiiwLplj75Ni0Hk7AuBgtCgdfiFv1LSFdlvXpfC6mohGOtwjw1B9E677ArJVMRwLWZr6yRJOzsdGGfZz1N9s3jH/eUgCX5Hun8pPlbneg0FHkn29SMyNbe4mKOmHsWfZEmd3Rto/pJLQ==)
 ## LIBSSH2 for iOS, visionOS, and Mac OS X (Intel & Apple Silicon M1) - arm64 / x86_64
 
 Supported versions: 1.11.0, 1.10.0, 1.9.0 (use the appropriate tag or branch to choose a version)
