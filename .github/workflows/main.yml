@@ -4,7 +4,7 @@ on:
     types: [published]
   push:
     tags:
-        - 1.**
+        - 1.11.1.**
   workflow_dispatch:
 jobs:
   Build:
@@ -14,13 +14,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: |
-        export OPENSSL_RELEASE_LINK=https://github.com/apotocki/openssl-iosx/releases/download/1.1.1w.1
-        scripts/build.sh
-        for i in frameworks/*.xcframework/; do cd frameworks && zip -9 -r "$(basename -- $i).zip" $(basename -- $i) & done; wait
+        export OPENSSL_DOWNLOAD=1
+        scripts/build.sh -p=macosx-both,ios,iossim-both,catalyst-both,xros,xrossim-both,watchos,watchossim-both,tvos,tvossim-both
         cd frameworks
+        zip -9 -r ssh2.xcframework.zip ssh2.xcframework
         mv Headers include
         zip -9 -r include.zip include
-        wait
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
