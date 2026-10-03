@@ -1,7 +1,5 @@
 /**/.DS_STORE
 /libssh2-*
+/openssl-iosx-*
 /build*
 /frameworks
-/scripts/Pods
-/scripts/Podfile.lock
-scripts/deps.xcworkspace
