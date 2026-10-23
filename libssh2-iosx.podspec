@@ -1,7 +1,8 @@
 Pod::Spec.new do |s|
     s.name         = "libssh2-iosx"
-    s.version      = "1.11.1.0"
+    s.version      = "1.11.1.1"
     s.summary      = "libssh2 (SSH2 client library) XCFramework for macOS, iOS, watchOS, tvOS, and visionOS, with Catalyst and simulators."
+    s.description  = "libssh2 (SSH2 client library) XCFramework for macOS, iOS, watchOS, tvOS, and visionOS, with Catalyst and simulators. New versions are published to the apotocki/cocoapods-specs spec repo (https://github.com/apotocki/cocoapods-specs), because CocoaPods Trunk becomes read-only on December 2, 2026: add :source => 'https://github.com/apotocki/cocoapods-specs.git' to the pod in your Podfile. The libssh2-iosx/OpenSSL subspec depends on openssl-iosx, which needs the same :source."
     s.homepage     = "https://github.com/apotocki/libssh2-iosx"
     s.license      = "BSD-3-Clause License"
     s.author       = { "Alexander Pototskiy" => "alex.a.potocki@gmail.com" }
