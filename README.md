@@ -14,7 +14,7 @@ using the corresponding upstream tag (for example `libssh2-1.11.1`).
 
 ## Supported libssh2 Versions
 
-Supported libssh2 1.11.x upstream versions: [1.11.1](https://github.com/apotocki/libssh2-iosx/tree/1.11.1.0), [1.11.0](https://github.com/apotocki/libssh2-iosx/tree/1.11.0.1)
+Supported libssh2 1.11.x upstream versions: [1.11.1](https://github.com/apotocki/libssh2-iosx/tree/1.11.1.1), [1.11.0](https://github.com/apotocki/libssh2-iosx/tree/1.11.0.1)
 
 Supported libssh2 1.10.x upstream versions: [1.10.0](https://github.com/apotocki/libssh2-iosx/tree/1.10.0.2)
 
@@ -26,7 +26,7 @@ Use the appropriate **Git tag or branch** to select the desired libssh2 version.
 ### Versioning Policy
 
 Branches correspond to official libssh2 versions.
-Tags use the format `<libssh2_version>.<package_patch>` (e.g. `1.11.1.0`), where `package_patch` is this repository’s packaging/build revision for that upstream version.
+Tags use the format `<libssh2_version>.<package_patch>` (e.g. `1.11.1.1`), where `package_patch` is this repository’s packaging/build revision for that upstream version.
 
 ---
 
@@ -153,17 +153,20 @@ Add the following to your `Podfile`:
 
 ```ruby
 use_frameworks!
-pod 'libssh2-iosx', '~> 1.11.1'
+pod 'libssh2-iosx', '~> 1.11.1', :source => 'https://github.com/apotocki/cocoapods-specs.git'
+pod 'openssl-iosx', :source => 'https://github.com/apotocki/cocoapods-specs.git'  # the dependency of libssh2-iosx/OpenSSL
 # or pin to a specific tag
-# pod 'libssh2-iosx', :git => 'https://github.com/apotocki/libssh2-iosx', :tag => '1.11.1.0'
+# pod 'libssh2-iosx', :git => 'https://github.com/apotocki/libssh2-iosx', :tag => '1.11.1.1'
 ```
+
+New versions are published to the [apotocki/cocoapods-specs](https://github.com/apotocki/cocoapods-specs) spec repo, because CocoaPods Trunk becomes read-only on December 2, 2026; `:source` makes CocoaPods take the pod from there. `openssl-iosx` needs its own line with `:source`: CocoaPods looks up the dependencies of a pod in the Podfile's global sources, which is Trunk by default.
 
 By default, the pod also installs a compatible OpenSSL: it depends on `openssl-iosx` `~> 3.5` (the `libssh2-iosx/OpenSSL` subspec), so nothing else is needed.
 
 If your project already gets OpenSSL another way (for example a different OpenSSL pod or your own build), use the `Core` subspec, which contains only libssh2. Two OpenSSL copies in one application cause duplicate symbol errors, and the OpenSSL you link must be compatible with OpenSSL 3.5:
 
 ```ruby
-pod 'libssh2-iosx/Core', '~> 1.11.1'
+pod 'libssh2-iosx/Core', '~> 1.11.1', :source => 'https://github.com/apotocki/cocoapods-specs.git'
 ```
 
 Then install the dependency:
@@ -190,7 +193,7 @@ Precompiled artifacts published via GitHub Releases are subject to the upstream 
 
 ## As an advertisement…
 
-Please check out my iOS application on the App Store:
+Please check out my applications:
 
 <table align="center" border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -201,14 +204,29 @@ Please check out my iOS application on the App Store:
     </td>
     <td>
       <a href="https://apps.apple.com/us/app/potohex/id1620963302">PotoHEX</a><br />
-      HEX File Viewer &amp; Editor
+      HEX File Viewer &amp; Editor<br />
+      iOS &middot; App Store
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://play.google.com/store/apps/details?id=com.potohex">
+        <img src="https://play-lh.googleusercontent.com/we6L4zSvYH6K8K19sN7A1aS2Mlkp2kxWN-QSna0vHJEioxFB-dfMGUBUG2m6Bg-VqLaX50_PcgdyJd45A4z8ew=s140" width="70" />
+      </a>
+    </td>
+    <td>
+      <a href="https://play.google.com/store/apps/details?id=com.potohex">Otok Hex</a><br />
+      HEX File Viewer<br />
+      Android &middot; Google Play
     </td>
   </tr>
 </table>
 
 PotoHEX is designed for viewing and editing files at the byte or character level, calculating hashes, encoding/decoding data, and compressing/decompressing selected byte ranges.
 
-If you find this project useful, you can support my open-source work by trying the [App](https://apps.apple.com/us/app/potohex/id1620963302).
+Otok Hex lets you inspect any file's bytes in hex and text on Android, with Wi-Fi access to the files from your PC.
+
+If you find this project useful, you can support my open-source work by trying [PotoHEX](https://apps.apple.com/us/app/potohex/id1620963302) on the App Store or [Otok Hex](https://play.google.com/store/apps/details?id=com.potohex) on Google Play.
 
 ---
 
