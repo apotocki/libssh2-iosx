@@ -1,5 +1,7 @@
 ## LIBSSH2 for iOS and Mac OS X (Intel & Apple Silicon M1) - arm64 / x86_64
 
+> **libssh2 is now available through [otok](https://otok-dev.github.io/)**, which builds it from source on your machine for the platforms of your app: see [Using otok](https://github.com/apotocki/libssh2-iosx/blob/master/README.md#using-otok-recommended) in the `master` branch. otok provides the current versions of libssh2; this branch keeps the build scripts of libssh2 1.10.0.
+
 Supported version: 1.10.0
 
 This repo provides a universal script for building static LIBSSH2 library for use in iOS and Mac OS X applications.
