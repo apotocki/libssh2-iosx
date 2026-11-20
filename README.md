@@ -1,6 +1,8 @@
 
 ## libssh2 1.11.1 for Apple Platforms
 
+> **libssh2 is now available through [otok](https://otok-dev.github.io/)**, which builds it from source on your machine for the platforms of your app: see [Using otok](https://github.com/apotocki/libssh2-iosx/blob/master/README.md#using-otok-recommended) in the `master` branch. otok provides the current versions of libssh2; this branch keeps the build scripts of libssh2 1.11.1.
+
 This branch contains build scripts for producing the libssh2 static library packaged as an XCFramework for Apple platforms, based on the **upstream libssh2 1.11.1 release**.
 
 The libssh2 source code is fetched from the official upstream repository:
